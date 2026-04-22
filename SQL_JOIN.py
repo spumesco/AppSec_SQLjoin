@@ -127,7 +127,12 @@ def insert_member():
             print("--- [ 성적 데이터 추가 ] ---")
             member_sep = input("- 학생 번호(seq) 입력: ")
             subject = input("- 과목명 입력: ")
-            score = input("- 점수 입력: ")
+            while True:
+                score = input("- 점수 입력: ")
+                if score.isdigit():
+                    break
+                else:
+                    print("[시스템] 점수는 숫자만 입력해야 합니다. 다시 입력하세요.")
             term = input("- 수강 학기 입력(ex. 2026-1): ")
             sql = "INSERT INTO grades (member_seq, subject, score, term) VALUES ('" + member_sep + "', '" + subject + "', '" + score + "', '" + term + "')"
             cursor.execute(sql)
