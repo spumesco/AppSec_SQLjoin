@@ -1,5 +1,7 @@
 import pymysql
 import sys
+import os
+import subprocess
 #MariaDB 접속 정보
 DB_HOST = "192.168.100.20"
 DB_USER = "cjulib"
@@ -19,6 +21,10 @@ def main_menu():
         print("6. 종료")
         print("---------------------------")
         choice = input("메뉴 선택: ")
+        if os.name == 'nt':
+            subprocess.run("cls", shell=True)
+        else:
+            subprocess.run("clear", shell=True)
         if choice == '1':
             select_all()
         elif choice == '2':
@@ -30,6 +36,7 @@ def main_menu():
         elif choice == '5':
             update_member()
         elif choice == '6':
+            print("6. 종료 선택")
             print("프로그램을 종료합니다. 감사합니다.")
             break
         else:
@@ -164,7 +171,6 @@ def delete_member():
             cursorclass=pymysql.cursors.DictCursor
             )
         with conn.cursor() as cursor:
-            #print("--- [ 성적 데이터 삭제 ] ---")
             id_input = input("삭제할 성적의 고유 ID(id_grade) 입력: ")
             cursor.execute("SELECT id_grade, subject FROM grades WHERE id_grade = %s", (id_input,))
             row = cursor.fetchone()
@@ -201,7 +207,6 @@ def update_member():
             cursorclass=pymysql.cursors.DictCursor
             )
         with conn.cursor() as cursor:
-            #print("--- [ 성적 데이터 수정 ] ---")
             sql = "UPDATE grades SET score = %s WHERE id_grade = %s"
             target_id = int(input("수정할 성적의 고유 ID(id_grade) 입력: "))
             cursor.execute("SELECT subject, score FROM grades WHERE id_grade = %s", (target_id,))
